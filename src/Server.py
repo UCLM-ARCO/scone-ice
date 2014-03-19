@@ -10,20 +10,21 @@ import SconeWrapper
 
 class SconeServiceI(SconeWrapper.SconeService):
     def sconeRequest(self, str, current=None):
-        host = '161.67.106.106'
-        port = 5000
+        print str
+
         size = 1024
-        prompt = '[PROMPT\n]'
+        prompt = "[PROMPT]\n"
 
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((host, port))
+        s.connect(("127.0.0.1", 5000))
 
-        answer = s.receive
+        answer = s.recv(size)
         if (answer == prompt):
             s.send(str)
             answer = s.recv(size)
+            print answer
 
-        return str
+        return answer
 
 
 class Server(Ice.Application):
