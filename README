@@ -72,30 +72,11 @@ scone/scone-0.8.22/0.8.22/kb/core.lisp
 
 
 3--------------------------------------------------------------------------
-El archivo pathToFiles es buena idea copiar para no tener que estar
-metiendo continuamente los datos, en este fichero están los enlaces
-para cargar los archivos necesarios de scone.
+La carga de todos estos archivos se realiza en el archivo load.lisp.
+"/opt/scone/scone-server-1.0/src/load.lisp"
 
-tfg.maria.campos/source/Scone/Scone
-
-Copiarlo a
-
-scone/scone/pathToFiles  de nuestra instalación de scone
+Aquí se encuentra la sentencia  (load-kb "core")   
+la cual se encarga de llamar a core.lisp, que es donde se encuentran los 
+archivos anteriores. 
 
 
-4.-----------------------------------------------------------------------
-Abrir pathToFiles para cambiar la ruta a las correspondientes en nuestro caso:
-
-;;;(load "/opt/scone/scone-0.8.22/0.8.22/pathToFiles")
-
-(load "/opt/scone/scone-0.8.22/scone-loader.lisp")
-(scone "0.8.22")
-(load "/opt/scone/scone-0.8.22/kb/core.lisp")
-
-La primera de ellas está comentada para ponerla en scone cuando se abre con emacs.
-
-
-5--------------------------------------------------------------------------
-
-Editar src/load.lisp y añadir el
-(load "/opt/scone/scone-0.8.22/pathToFiles")
