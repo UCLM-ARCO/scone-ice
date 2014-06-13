@@ -1,1 +1,3 @@
 SconeWrapperAdapter.Endpoints=tcp -p 9090
+Ice.ThreadPool.Server.Size = 10
+Ice.ThreadPool.Client.Size = 10

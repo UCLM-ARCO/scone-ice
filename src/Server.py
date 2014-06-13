@@ -16,7 +16,7 @@ class SconeServiceI(SconeWrapper.SconeService):
         prompt = "[PROMPT]\n"
 
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect(("127.0.0.1", 5000))
+        s.connect(("localhost", 5000))
 
         answer = s.recv(size)
         if (answer == prompt):

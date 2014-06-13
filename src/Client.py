@@ -15,7 +15,7 @@ class client (Ice.Application):
         if not scone:
             raise RuntimeError('Invalid proxy')
 
-        cad = "(new-indv {Julian} {person})\n"
+        cad = "(is-util-way  {calle tinte})\n"
         str = scone.sconeRequest(cad)
         print(str)
 

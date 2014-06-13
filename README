@@ -1,0 +1,101 @@
+1.---------------------------------------------------------------------
+Copiado de archivos .lisp para funcionar con scone, esto se considera
+la carga inicial.  Cada vez que el servidor se apaga, y se enciende,
+hay que volver a cargar los archivos.
+
+
+Ruta de destino de los archivos :
+"scone/scone-0.8.22/0.8.22/kb/core-components"
+
+En esta carpeta se cargarán los archivos para la smart-city con las
+definiciones de la ciudad en un archivo .lisp.
+
+Estos archivos son:
+tfg.maria.campos/source/Scone/Scone/0.8.22/kb/core-components
+SmarCityDomainKnowledge.lisp
+streetsAdjacents.lisp
+streetsEgine.lisp
+streetInformation.lisp
+
+
+También se cargan los archivos de la Ontología Sofía
+entities.lisp
+properties.lisp
+
+
+
+2.---------------------------------------------------------------------
+El siguiente paso es añadir el siguiente codigo al final del archivo
+scone/scone-0.8.22/0.8.22/kb/core.lisp
+
+;;;; ----------------------------------------------------------------------
+;;;; SOFIA ONTOLOGY ENTITIES
+
+;;;; SOFIA ontology entities.
+
+(load-kb "core-components/entities")
+
+;;;; ----------------------------------------------------------------------
+;;;; SOFIA ONTOLOGY PROPERTIES
+
+;;; SOFIA ontology properties.
+
+(load-kb "core-components/properties")
+
+;;;; ----------------------------------------------------------------------
+;;;; SMART CITY DOMAIN KNOWLEDGE
+
+;;; Smart City domain.
+
+(load-kb "core-components/SmartCityDomainKnowledge.lisp")
+
+;;;; ----------------------------------------------------------------------
+;;;; CIUDAD REAL DISTRIBUTION
+
+;;;; Streets distribution of Ciudad Real with name, road types, etc.
+
+(load-kb "core-components/streetsInformation")
+
+;;;; ----------------------------------------------------------------------
+;;;; CIUDAD REAL DISTRIBUTION
+
+;;;; Streets distribution of Ciudad Real with adjacents and traffic direction.
+
+(load-kb "core-components/streetsAdjacents")
+
+;;;; ----------------------------------------------------------------------
+;;;; SCONE FUNCTIONS
+
+;;;; Functions of Scone to getNextCamera algorithm
+
+(load-kb "core-components/streetsEngine")
+
+
+3--------------------------------------------------------------------------
+El archivo pathToFiles es buena idea copiar para no tener que estar
+metiendo continuamente los datos, en este fichero están los enlaces
+para cargar los archivos necesarios de scone.
+
+tfg.maria.campos/source/Scone/Scone
+
+Copiarlo a
+
+scone/scone/pathToFiles  de nuestra instalación de scone
+
+
+4.-----------------------------------------------------------------------
+Abrir pathToFiles para cambiar la ruta a las correspondientes en nuestro caso:
+
+;;;(load "/opt/scone/scone-0.8.22/0.8.22/pathToFiles")
+
+(load "/opt/scone/scone-0.8.22/scone-loader.lisp")
+(scone "0.8.22")
+(load "/opt/scone/scone-0.8.22/kb/core.lisp")
+
+La primera de ellas está comentada para ponerla en scone cuando se abre con emacs.
+
+
+5--------------------------------------------------------------------------
+
+Editar src/load.lisp y añadir el
+(load "/opt/scone/scone-0.8.22/pathToFiles")
