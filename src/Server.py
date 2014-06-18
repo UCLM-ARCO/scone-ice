@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding:utf-8; tab-width:4; mode:python -*-
 import sys
+import os
 import Ice
 import socket
 
@@ -31,6 +32,8 @@ class Server(Ice.Application):
     def run(self, argv):
         broker = self.communicator()
         servant = SconeServiceI()
+
+        os.system("cd /opt/scone/scone-server-1.0/ && sudo -s ./start-server 5000 -noxml")
 
         adapter = broker.createObjectAdapter("SconeWrapperAdapter")
         proxy = adapter.add(servant, broker.stringToIdentity("sconeService"))
