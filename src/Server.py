@@ -1,11 +1,16 @@
 #!/usr/bin/python
 # -*- coding:utf-8; tab-width:4; mode:python -*-
+
 import sys
 import os
 import Ice
 import socket
+from commodity.os_ import SubProcess
 
-Ice.loadSlice('SconeWrapper.ice')
+
+pwd = os.path.dirname(__file__)
+slice_path = os.path.join(pwd, 'SconeWrapper.ice')
+Ice.loadSlice(slice_path)
 import SconeWrapper
 
 
@@ -33,9 +38,8 @@ class Server(Ice.Application):
         broker = self.communicator()
         servant = SconeServiceI()
 
-        os.system("cd /opt/scone/scone-server-1.0/ && sudo -s ./start-server 5000 -noxml")
-
-        adapter = broker.createObjectAdapter("SconeWrapperAdapter")
+        self.start_scone()
+        adapter = broker.createObjectAdapter("Adapter")
         proxy = adapter.add(servant, broker.stringToIdentity("sconeService"))
 
         print(proxy)
@@ -44,7 +48,14 @@ class Server(Ice.Application):
         self.shutdownOnInterrupt()
         broker.waitForShutdown()
 
+        self.stop_scone()
         return 0
+
+    def start_scone(self):
+        SubProcess("./start-server 5000 -noxml", cwd="/opt/scone/scone-server-1.0/")
+
+    def stop_scone(self):
+        SubProcess("./stop-server", cwd="/opt/scone/scone-server-1.0/")
 
 
 server = Server()
