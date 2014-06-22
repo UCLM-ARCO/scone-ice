@@ -45,7 +45,7 @@ class Server(Ice.Application):
         broker = self.communicator()
         servant = SconeServiceI(host)
 
-        self.start_scone()
+        # self.start_scone()
         adapter = broker.createObjectAdapter("Adapter")
         proxy = adapter.add(servant, broker.stringToIdentity("sconeService"))
 
@@ -55,7 +55,7 @@ class Server(Ice.Application):
         self.shutdownOnInterrupt()
         broker.waitForShutdown()
 
-        self.stop_scone()
+        # self.stop_scone()
         return 0
 
     def start_scone(self):
