@@ -15,6 +15,9 @@ import SconeWrapper
 
 
 class SconeServiceI(SconeWrapper.SconeService):
+    def __init__(self, host):
+        self.host = host
+
     def sconeRequest(self, str, current=None):
         print str
 
@@ -22,7 +25,7 @@ class SconeServiceI(SconeWrapper.SconeService):
         prompt = "[PROMPT]\n"
 
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect(("localhost", 5000))
+        s.connect((self.host, 5000))
 
         answer = s.recv(size)
         if (answer == prompt):
@@ -34,9 +37,13 @@ class SconeServiceI(SconeWrapper.SconeService):
 
 
 class Server(Ice.Application):
-    def run(self, argv):
+    def run(self, args):
+        host = "localhost"
+        if len(args) > 1:
+            host = args[1]
+
         broker = self.communicator()
-        servant = SconeServiceI()
+        servant = SconeServiceI(host)
 
         self.start_scone()
         adapter = broker.createObjectAdapter("Adapter")
