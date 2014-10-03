@@ -1,3 +1,4 @@
 Adapter.Endpoints=tcp -p 9090
 Ice.ThreadPool.Server.Size = 10
 Ice.ThreadPool.Client.Size = 10
+SconeServer.path = /opt/scone/scone-server-1.0/

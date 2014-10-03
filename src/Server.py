@@ -18,8 +18,8 @@ class SconeServiceI(SconeWrapper.SconeService):
     def __init__(self, host):
         self.host = host
 
-    def sconeRequest(self, str, current=None):
-        print str
+    def sconeRequest(self, msg, current=None):
+        print msg
 
         size = 1024
         prompt = "[PROMPT]\n"
@@ -29,7 +29,7 @@ class SconeServiceI(SconeWrapper.SconeService):
 
         answer = s.recv(size)
         if (answer == prompt):
-            s.send(str)
+            s.send(msg)
             answer = s.recv(size)
             print answer
 
@@ -43,6 +43,11 @@ class Server(Ice.Application):
             host = args[1]
 
         broker = self.communicator()
+        self.scone_path = broker.getProperties().getProperty('SconeServer.path')
+        if not self.scone_path:
+            print "Error: set 'SconeServer.path' property"
+            return 1
+
         servant = SconeServiceI(host)
 
         # self.start_scone()
@@ -59,11 +64,10 @@ class Server(Ice.Application):
         return 0
 
     def start_scone(self):
-        SubProcess("./start-server 5000 -noxml", cwd="/opt/scone/scone-server-1.0/")
+        SubProcess("./start-server 5000 -noxml", cwd=self.scone_path)
 
     def stop_scone(self):
-        SubProcess("./stop-server", cwd="/opt/scone/scone-server-1.0/")
+        SubProcess("./stop-server", cwd=self.scone_path)
 
 
-server = Server()
-sys.exit(server.main(sys.argv))
+sys.exit(Server().main(sys.argv))
