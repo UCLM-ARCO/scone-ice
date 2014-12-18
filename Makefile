@@ -11,6 +11,9 @@ deploy: all
 	cp -r $$(pwd) $(ICEPATCH2_DIR)
 	icepatch2calc $(ICEPATCH2_DIR)
 
+install:
+	true
+
 
 PHONY: clean
 clean:

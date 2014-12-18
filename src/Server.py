@@ -7,14 +7,12 @@ import Ice
 import socket
 from commodity.os_ import SubProcess
 
-
-pwd = os.path.dirname(__file__)
-slice_path = os.path.join(pwd, 'SconeWrapper.ice')
-Ice.loadSlice(slice_path)
-import SconeWrapper
+dharma_root = "/usr/share/slice/dharma"
+Ice.loadSlice("-I {} {}/dharma.ice".format(Ice.getSliceDir(), dharma_root))
+import SemanticModel
 
 
-class SconeServiceI(SconeWrapper.SconeService):
+class SconeServiceI(SemanticModel.SconeService):
     def __init__(self, host):
         self.host = host
 
@@ -52,7 +50,7 @@ class Server(Ice.Application):
 
         # self.start_scone()
         adapter = broker.createObjectAdapter("Adapter")
-        proxy = adapter.add(servant, broker.stringToIdentity("sconeService"))
+        proxy = adapter.add(servant, broker.stringToIdentity("scone"))
 
         print(proxy)
 
