@@ -2,6 +2,7 @@
 
 SHELL   = /bin/bash
 DIRNAME = $(notdir $(shell 'pwd'))
+DESTDIR?=~
 
 all:
 
@@ -12,7 +13,10 @@ deploy: all
 	icepatch2calc $(ICEPATCH2_DIR)
 
 install:
-	true
+	install -d $(DESTDIR)/usr/bin/
+	install -m 644 src/Server.py $(DESTDIR)/usr/bin/scone-wrapper
+
+
 
 
 PHONY: clean
