@@ -1,4 +1,13 @@
-scone-wrapper (20141218-1) unstable; urgency=low
+scone-wrapper (0.20150302-1) unstable; urgency=low
+
+  * New release
+  * Start/Stop scone-server
+  * debian/init.d
+  * src/scone-wrapper.conf
+
+ -- Oscar Aceña Herrera <oscaracena@gmail.com>  Mon, 02 Mar 2015 12:14:12 +0100
+
+scone-wrapper (0.20141218-1) unstable; urgency=low
 
   * Initial release
 

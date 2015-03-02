@@ -7,12 +7,12 @@ import Ice
 import socket
 from commodity.os_ import SubProcess
 
-dharma_root = "/usr/share/slice/dharma"
-Ice.loadSlice("-I {} {}/dharma.ice".format(Ice.getSliceDir(), dharma_root))
-import SemanticModel
+slice_dir = "/usr/share/slice"
+Ice.loadSlice("-I{0} {0}/dharma/dharma.ice --all".format(slice_dir))
+import Semantic
 
 
-class SconeServiceI(SemanticModel.SconeService):
+class SconeServiceI(Semantic.SconeService):
     def __init__(self, host):
         self.host = host
 
@@ -48,8 +48,8 @@ class Server(Ice.Application):
 
         servant = SconeServiceI(host)
 
-        # self.start_scone()
-        adapter = broker.createObjectAdapter("Adapter")
+        self.start_scone()
+        adapter = broker.createObjectAdapter("SconeAdapter")
         proxy = adapter.add(servant, broker.stringToIdentity("scone"))
 
         print(proxy)
@@ -58,7 +58,7 @@ class Server(Ice.Application):
         self.shutdownOnInterrupt()
         broker.waitForShutdown()
 
-        # self.stop_scone()
+        self.stop_scone()
         return 0
 
     def start_scone(self):

@@ -2,13 +2,15 @@ Source: scone-wrapper
 Section: devel
 Priority: optional
 Maintainer: María José Santofimia Romero <MariaJose.Santofimia@uclm.es>
-Uploaders: David Villa Alises <David.Villa@gmail.com>
-Build-Depends: debhelper (>= 9.0.0)
+Uploaders: David Villa Alises <David.Villa@gmail.com>,
+	   Oscar Aceña Herrera <oscaracena@gmail.com>
+Build-Depends: debhelper (>= 9.0.0), python
 Standards-Version: 3.9.6
 Homepage: https://bitbucket.org/arco_group/scone.wrapper
 
 Package: scone-wrapper
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}, python-zeroc-ice, dharma
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}, python-zeroc-ice, dharma,
+ python-commodity
 Description: Ice service Scone wrapper
  Ice service wrapper for the Scone Server
