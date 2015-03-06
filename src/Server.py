@@ -17,7 +17,6 @@ class SconeServiceI(Semantic.SconeService):
         self.host = host
 
     def sconeRequest(self, msg, current=None):
-        print msg
 
         size = 1024
         prompt = "[PROMPT]\n"
@@ -30,8 +29,19 @@ class SconeServiceI(Semantic.SconeService):
             s.send(msg)
             answer = s.recv(size)
             print answer
+            self.checkpoint(s, size, prompt)
 
         return answer
+
+    def checkpoint(self, s, size, prompt):
+        checkpoint_file = "/var/lib/dharma/checkpoint.lisp"
+        checkpoint = "(checkpoint-new \"" + checkpoint_file + "\")\n"
+
+        answer = s.recv(size)
+        if (answer == prompt):
+            s.send(checkpoint)
+            checkpoint_answer = s.recv(size)
+            print checkpoint_answer
 
 
 class Server(Ice.Application):
