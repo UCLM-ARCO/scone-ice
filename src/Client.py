@@ -10,7 +10,7 @@ import SconeWrapper
 class client (Ice.Application):
     def run(self, argv):
         proxy = self.communicator().stringToProxy(argv[1])
-        scone = SconeWrapper.SconeServicePrx.checkedCast(proxy)
+        scone = SconeWrapper.SconeServicePrx.uncheckedCast(proxy)
 
         if not scone:
             raise RuntimeError('Invalid proxy')

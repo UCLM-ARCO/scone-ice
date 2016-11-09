@@ -28,8 +28,8 @@ class SconeServiceI(Semantic.SconeService):
         if (answer == prompt):
             s.send(msg)
             answer = s.recv(size)
-            print answer
-            self.checkpoint(s, size, prompt)
+            print(answer)
+            #self.checkpoint(s, size, prompt)
 
         return answer
 
@@ -41,7 +41,7 @@ class SconeServiceI(Semantic.SconeService):
         if (answer == prompt):
             s.send(checkpoint)
             checkpoint_answer = s.recv(size)
-            print checkpoint_answer
+            print(checkpoint_answer)
 
 
 class Server(Ice.Application):
@@ -53,7 +53,7 @@ class Server(Ice.Application):
         broker = self.communicator()
         self.scone_path = broker.getProperties().getProperty('SconeServer.path')
         if not self.scone_path:
-            print "Error: set 'SconeServer.path' property"
+            print("Error: set 'SconeServer.path' property")
             return 1
 
         servant = SconeServiceI(host)
