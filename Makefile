@@ -6,11 +6,9 @@ DESTDIR?=~
 
 all:
 
-deploy: ICEPATCH2_DIR = /var/lib/icegrid/icepatch2.dir
-deploy: all
-	rm -rf $(ICEPATCH2_DIR)/$(DIRNAME)
-	cp -r $$(pwd) $(ICEPATCH2_DIR)
-	icepatch2calc $(ICEPATCH2_DIR)
+-PHONY: tests
+tests:
+	nosetests3 -s test
 
 install:
 	install -d $(DESTDIR)/usr/bin/
