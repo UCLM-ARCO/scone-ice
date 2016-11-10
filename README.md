@@ -44,4 +44,4 @@ If you want upload local knowledge, save on .lisp files in a subdirectory called
 
 To start scone-wrapper from repository contents run:
 
-    scone.wrapper$ src/Server.py --Ice.Config=src/Server.config
+    scone.wrapper/src$ Server.py --Ice.Config=Server.config
