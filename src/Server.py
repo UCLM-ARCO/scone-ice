@@ -22,6 +22,8 @@ slice_dir = "/usr/share/slice"
 Ice.loadSlice("-I{0} {0}/dharma/dharma.ice --all".format(slice_dir))
 import Semantic
 
+LOCAL_KNOWLEDGE = 'scone-knowledge.d'
+
 
 class SconeServiceI(Semantic.SconeService):
     def __init__(self, host):
@@ -31,6 +33,29 @@ class SconeServiceI(Semantic.SconeService):
             logging.info("connection OK")
         else:
             raise SystemExit("connection FAILED!")
+
+        if os.path.exists(LOCAL_KNOWLEDGE):
+            self.load_local_knowledge()
+
+    def load_local_knowledge(self):
+        logging.info("Uploading local knowledge...")
+
+        for fname in os.listdir(LOCAL_KNOWLEDGE):
+            self.load_local_file(os.path.join(LOCAL_KNOWLEDGE, fname))
+
+    def load_local_file(self, fname):
+        error = False
+        with open(fname, mode='rt') as f:
+            for i, sentence in enumerate(f.readlines()):
+                try:
+                    self.client.sentence(sentence)
+                except scone_client.SconeError as e:
+                    logging.error("{}:{} returns '{}'".format(fname, i + 1, e))
+                    error = True
+                    break
+
+        if error:
+            raise SystemExit("Error loading '{}'.".format(fname))
 
     def patient_connect(self):
         logging.info("Trying to connect to scone-server...")
@@ -66,12 +91,6 @@ class Server(Ice.Application):
             host = args[1]
 
         broker = self.communicator()
-        self.scone_path = os.path.expanduser(
-            broker.getProperties().getProperty('SconeServer.path'))
-
-        if not self.scone_path:
-            print("Error: set 'SconeServer.path' property")
-            return 1
 
         try:
             self.start_scone_server()
@@ -92,13 +111,16 @@ class Server(Ice.Application):
         return 0
 
     def start_scone_server(self):
-        self.scone_server = Popen(['/bin/bash', '-c', './server.sh'],
-                                  cwd=self.scone_path)
+        cmd = '/bin/bash -c scone-server'.split()
+        self.scone_server = Popen(cmd)
         logging.info("scone-server started PID:{}".format(self.scone_server.pid))
 
     def stop_scone_server(self):
         self.scone_server.send_signal(signal.SIGINT)
-        logging.info("scone-server terminated")
+        logging.info("scone-server terminated OK")
 
 
-sys.exit(Server().main(sys.argv))
+try:
+    sys.exit(Server().main(sys.argv))
+except SystemExit:
+    sys.exit(1)

@@ -8,13 +8,15 @@ all:
 
 -PHONY: tests
 tests:
-	nosetests3 -s test
+	nosetests -s test/integration_test.py
 
 install:
 	install -d $(DESTDIR)/usr/bin/
-	install -m 644 src/Server.py $(DESTDIR)/usr/bin/scone-wrapper
-	install -d $(DESTDIR)/etc
-	install -m 644 src/scone-wrapper.conf $(DESTDIR)/etc/
+	install -m 744 scone-wrapper $(DESTDIR)/usr/bin/
+	install -d $(DESTDIR)/usr/lib/scone-wrapper/
+	install -m 644 src/Server.py $(DESTDIR)/usr/lib/scone-wrapper/
+	install -d $(DESTDIR)/etc/default
+	install -m 644 src/Server.config $(DESTDIR)/etc/default/scone-wrapper.config
 
 
 PHONY: clean
