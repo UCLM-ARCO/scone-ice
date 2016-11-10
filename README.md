@@ -21,11 +21,14 @@ If you want upload local knowledge, save on .lisp files in a subdirectory called
 
     $ ls
     scone-knowledge.d
+
     $ ls scone-knowledge.d/
     monkeys.lisp
+
     $ cat scone-knowledge.d/monkeys.lisp 
     (new-indv {Martin} {monkey})
     (new-indv {Felix}  {monkey})
+
     $ scone-wrapper
     INFO:root:scone-server started PID:24936
     INFO:root:Trying to connect to scone-server...
