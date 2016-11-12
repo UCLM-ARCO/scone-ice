@@ -1,4 +1,4 @@
-To install scone-wrapper just:
+# Install
   
 * Configure Debian testing (stretch) mirror
 * Add [pike repository](http://pike.esi.uclm.es/)
