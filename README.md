@@ -52,11 +52,11 @@ The scone-wrapper client may issue:
 
     scone_proxy.request('(checkpoint "new-things")')
 
-Then server generate a file on:
+Then server generates a file at:
 
     <working-dir>/scone-knowledge.d/snapshots/new-things.lisp
 
-When you restart the server, that files will be loaded too.
+When you restart the server, these files will be loaded as the other local knowledge.
 
 
 # Run from repository
