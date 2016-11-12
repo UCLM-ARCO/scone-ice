@@ -1,6 +1,5 @@
 # -*- mode: makefile-gmake; coding: utf-8 -*-
 
-SHELL   = /bin/bash
 DIRNAME = $(notdir $(shell 'pwd'))
 DESTDIR?=~
 
@@ -8,7 +7,7 @@ all:
 
 -PHONY: tests
 tests:
-	nosetests -s test/integration_test.py
+	nosetests3 -s test/*_tests.py
 
 install:
 	install -d $(DESTDIR)/usr/bin/

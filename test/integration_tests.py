@@ -5,6 +5,8 @@ import os
 import time
 from unittest import TestCase
 from subprocess import Popen, PIPE
+from functools import partial
+
 from hamcrest import is_not
 
 from commodity.path import find_in_ancestors
@@ -66,14 +68,13 @@ class LocalKnowledgeTest(TestCase):
         self.scone = Semantic.SconeServicePrx.uncheckedCast(proxy)
 
     def tearDown(self):
-        os.chdir(project_dir)
         self.server.terminate()
         wait_that(localhost, is_not(listen_port(5001)))
 
     def test_local_knowledge_ok(self):
-        os.chdir('test/knowledge_ok')
+        test_dir = 'test/knowledge_ok'
 
-        self.server = Popen(self.cmd.split(), stdout=PIPE)
+        self.server = Popen(self.cmd.split(), stdout=PIPE, cwd=test_dir)
         wait_that(localhost, listen_port(5001))
         self.addCleanup(self.server.terminate)
 
@@ -81,14 +82,47 @@ class LocalKnowledgeTest(TestCase):
             self.scone.sconeRequest('(is-x-a-y? {Felix} {monkey})'), 'YES')
 
     def test_local_knowledge_error(self):
-        os.chdir('test/knowledge_error')
+        test_dir = 'test/knowledge_error'
 
-        self.server = Popen(self.cmd.split(), stderr=PIPE)
+        self.server = Popen(self.cmd.split(), stderr=PIPE, cwd=test_dir)
         time.sleep(5)
         self.addCleanup(self.server.terminate)
         assert_that(localhost, is_not(listen_port(5001)))
 
-        expected = "Error loading 'scone-knowledge.d/martin.lisp'"
+        expected = b"Error loading 'scone-knowledge.d/martin.lisp'"
         actual = self.server.stderr.read()
-        print(actual)
+        print(expected)
+        print(actual.decode('utf-8'))
         self.assert_(expected in actual)
+
+    def test_checkpoint_save_and_restore(self):
+        test_dir = 'test/knowledge_ok/'
+        checkpoint_path = os.path.join(os.getcwd(), test_dir,
+                                       'scone-knowledge.d/snapshots')
+        checkpoint_file = os.path.join(checkpoint_path, 'birds.lisp')
+
+        if os.path.exists(checkpoint_file):
+            os.remove(checkpoint_file)
+
+        self.server = Popen(self.cmd.split(), cwd=test_dir)
+        wait_that(localhost, listen_port(5001))
+        self.addCleanup(self.server.terminate)
+
+        self.scone.sconeRequest('(new-indv {Jesus} {bird})')
+        self.scone.checkpoint('birds')
+        os.system('sync')
+
+        print(os.getcwd())
+        print(checkpoint_file)
+        self.assert_(os.path.exists(checkpoint_file))
+        self.addCleanup(partial(os.remove, checkpoint_file))
+
+        self.server.terminate()
+        wait_that(localhost, is_not(listen_port(5001)))
+
+        self.server = Popen(self.cmd.split(), cwd=test_dir)
+        wait_that(localhost, listen_port(5001))
+        self.addCleanup(self.server.terminate)
+
+        self.assertEquals(
+            self.scone.sconeRequest('(is-x-a-y? {Jesus} {bird})'), 'YES')

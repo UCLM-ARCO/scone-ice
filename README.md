@@ -1,8 +1,9 @@
 To install scone-wrapper just:
-  
+
 * Configure Debian testing (stretch) mirror
 * Add [pike repository](http://pike.esi.uclm.es/)
 * sudo apt install scone-wrapper
+
 
 To run just:
 
@@ -23,7 +24,7 @@ If you want upload local knowledge, save on .lisp files in a subdirectory called
     scone-knowledge.d
     $ ls scone-knowledge.d/
     monkeys.lisp
-    $ cat scone-knowledge.d/monkeys.lisp 
+    $ cat scone-knowledge.d/monkeys.lisp
     (new-indv {Martin} {monkey})
     (new-indv {Felix}  {monkey})
     $ scone-wrapper
@@ -37,6 +38,8 @@ If you want upload local knowledge, save on .lisp files in a subdirectory called
     INFO:root:Uploading local knowledge...
     scone -t -e 1.1:tcp -h 10.130.89.144 -p 5001 -t 60000
     ...
+
+
 
 
 To start scone-wrapper from repository contents run:

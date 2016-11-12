@@ -15,14 +15,30 @@ import logging
 stderrLogger = logging.StreamHandler()
 stderrLogger.setFormatter(logging.Formatter(logging.BASIC_FORMAT))
 logging.getLogger().addHandler(stderrLogger)
-logging.getLogger().setLevel(logging.INFO)
+logging.getLogger().setLevel(logging.DEBUG)
 
 
 slice_dir = "/usr/share/slice"
 Ice.loadSlice("-I{0} {0}/dharma/dharma.ice --all".format(slice_dir))
 import Semantic
 
-LOCAL_KNOWLEDGE = 'scone-knowledge.d'
+LOCAL_KNOWLEDGE_DIR = 'scone-knowledge.d'
+SNAPSHOT_DIR = 'snapshots'
+
+
+def iterate_files(path, callback):
+    def walk(path):
+        for root, dirs, files in os.walk(path):
+            files = [x for x in sorted(files) if x.endswith('.lisp')]
+            dirs.sort()
+            if SNAPSHOT_DIR in dirs:
+                del dirs[dirs.index(SNAPSHOT_DIR)]
+
+            for f in files:
+                callback(os.path.join(root, f))
+
+    walk(path)
+    walk(os.path.join(path, SNAPSHOT_DIR))
 
 
 class SconeServiceI(Semantic.SconeService):
@@ -34,27 +50,22 @@ class SconeServiceI(Semantic.SconeService):
         else:
             raise SystemExit("connection FAILED!")
 
-        if os.path.exists(LOCAL_KNOWLEDGE):
-            self.load_local_knowledge()
+        self.load_local_knowledge()
 
     def load_local_knowledge(self):
-        logging.info("Uploading local knowledge...")
+        if not os.path.exists(LOCAL_KNOWLEDGE_DIR):
+            return
 
-        for fname in os.listdir(LOCAL_KNOWLEDGE):
-            self.load_local_file(os.path.join(LOCAL_KNOWLEDGE, fname))
+        logging.info("Uploading local knowledge...")
+        iterate_files(LOCAL_KNOWLEDGE_DIR, self.load_local_file)
 
     def load_local_file(self, fname):
-        error = False
-        with open(fname, mode='rt') as f:
-            for i, sentence in enumerate(f.readlines()):
-                try:
-                    self.client.sentence(sentence)
-                except scone_client.SconeError as e:
-                    logging.error("{}:{} returns '{}'".format(fname, i + 1, e))
-                    error = True
-                    break
+        logging.info("Loading '{}'".format(fname))
 
-        if error:
+        try:
+            self.client.sentence('(load-kb "{}")'.format(os.path.abspath(fname)))
+        except scone_client.SconeError as e:
+            logging.error("{} returns '{}'".format(fname, e))
             raise SystemExit("Error loading '{}'.".format(fname))
 
     def patient_connect(self):
@@ -72,6 +83,16 @@ class SconeServiceI(Semantic.SconeService):
             return self.client.send(msg)
         except scone_client.SconeError as e:
             raise Semantic.SconeError(str(e))
+
+    def checkpoint(self, fname, current=None):
+        path = os.path.join(LOCAL_KNOWLEDGE_DIR, SNAPSHOT_DIR)
+        if not os.path.isdir(path):
+            os.makedirs(path)
+
+        fpath = os.path.abspath(os.path.join(path, fname + '.lisp'))
+        sentence = '(checkpoint-new "{}")'.format(fpath)
+        self.client.sentence(sentence)
+        logging.info("New checkpoint at '{}' was OK".format(fpath))
 
     # def checkpoint(self, s, size, prompt):
     #     checkpoint_file = "/var/lib/dharma/checkpoint.lisp"
@@ -120,7 +141,8 @@ class Server(Ice.Application):
         logging.info("scone-server terminated OK")
 
 
-try:
-    sys.exit(Server().main(sys.argv))
-except SystemExit:
-    sys.exit(1)
+if __name__ == '__main__':
+    try:
+        sys.exit(Server().main(sys.argv))
+    except SystemExit:
+        sys.exit(1)
