@@ -126,3 +126,27 @@ class LocalKnowledgeTest(TestCase):
 
         self.assertEquals(
             self.scone.sconeRequest('(is-x-a-y? {Jesus} {bird})'), 'YES')
+
+    def test_overwrite_checkpoint(self):
+        test_dir = 'test/knowledge_ok/'
+        checkpoint_path = os.path.join(os.getcwd(), test_dir,
+                                       'scone-knowledge.d/snapshots')
+        checkpoint_file = os.path.join(checkpoint_path, 'birds.lisp')
+
+        if os.path.exists(checkpoint_file):
+            os.remove(checkpoint_file)
+
+        self.server = Popen(self.cmd.split(), cwd=test_dir)
+        wait_that(localhost, listen_port(5001))
+        self.addCleanup(self.server.terminate)
+
+        self.scone.sconeRequest('(new-indv {Jesus} {bird})')
+        self.scone.checkpoint('birds')
+
+        self.scone.sconeRequest('(new-indv {Paco} {bird})')
+
+        try:
+            self.scone.checkpoint('birds')
+            self.fail('exception should was raised')
+        except Semantic.FileError:
+            pass
