@@ -78,11 +78,17 @@ class SconeServiceI(Semantic.SconeService):
 
         return None
 
-    def sconeRequest(self, msg, current=None):
+    def do_sentence(self, msg):
         try:
             return self.client.send(msg)
         except scone_client.SconeError as e:
             raise Semantic.SconeError(str(e))
+
+    def sentence(self, msg, current=None):
+        return self.do_sentence(msg)
+
+    def sconeRequest(self, msg, current=None):
+        return self.do_sentence(msg)
 
     def checkpoint(self, fname, current=None):
         path = os.path.join(LOCAL_KNOWLEDGE_DIR, SNAPSHOT_DIR)
@@ -90,19 +96,12 @@ class SconeServiceI(Semantic.SconeService):
             os.makedirs(path)
 
         fpath = os.path.abspath(os.path.join(path, fname + '.lisp'))
+        if os.path.exists(fpath):
+            raise Semantic.FileError("File {} already exists".format(fpath))
+
         sentence = '(checkpoint-new "{}")'.format(fpath)
         self.client.sentence(sentence)
         logging.info("New checkpoint at '{}' was OK".format(fpath))
-
-    # def checkpoint(self, s, size, prompt):
-    #     checkpoint_file = "/var/lib/dharma/checkpoint.lisp"
-    #     checkpoint = "(checkpoint-new \"" + checkpoint_file + "\")\n"
-
-    #     answer = s.recv(size)
-    #     if (answer == prompt):
-    #         s.send(checkpoint)
-    #         checkpoint_answer = s.recv(size)
-    #         print(checkpoint_answer)
 
 
 class Server(Ice.Application):

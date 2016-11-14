@@ -13,7 +13,7 @@ Architecture: all
 Depends: ${misc:Depends},
 	 scone-server,
 	 python3-zeroc-ice (>= 3.6),
-	 dharma (>= 0.20161112),
+	 dharma (>= 0.20161114),
 	 python3-scone-client (>= 0.20161112),
 	 python3-commodity (>= 0.20161112)
 Description: scone-server Ice wrapper
