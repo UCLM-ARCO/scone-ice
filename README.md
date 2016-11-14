@@ -20,7 +20,7 @@
 
 # Local knowledge
 
-If you want upload local knowledge, save on .lisp files in a subdirectory called `scone-knowledge.d`. All ".lisp" files on directories and subdirectories are loaded in alphabetic order.
+If you want automatically load local knowledge, save on .lisp files in a subdirectory called `scone-knowledge.d`. All ".lisp" files on directories and subdirectories are loaded in alphabetic order.
 
 Start `scone-wrapper` from parent:
 
