@@ -10,7 +10,11 @@ Homepage: https://bitbucket.org/arco_group/scone.wrapper
 
 Package: scone-wrapper
 Architecture: all
-Depends: ${misc:Depends}, scone-server, python3-scone-client,
-	 python3-zeroc-ice (>= 3.6), dharma, python3-commodity
+Depends: ${misc:Depends},
+	 scone-server,
+	 python3-zeroc-ice (>= 3.6),
+	 dharma (>= 0.20161112),
+	 python3-scone-client (>= 0.20161112),
+	 python3-commodity (>= 0.20161112)
 Description: scone-server Ice wrapper
  Ice service wrapper for the scone-server
