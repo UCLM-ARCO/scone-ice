@@ -24,7 +24,9 @@ import Semantic
 
 LOCAL_KNOWLEDGE_DIR = 'scone-knowledge.d'
 SNAPSHOT_DIR = 'snapshots'
-PROXY_FILE = '/tmp/scone-wrapper.proxy'
+
+SCONE_STATE = '.scone'
+PROXY_FILE = os.path.join(SCONE_STATE, 'scone-wrapper.proxy')
 
 
 def iterate_files(path, callback):
@@ -106,6 +108,9 @@ class SconeServiceI(Semantic.SconeService):
 
 
 def save_proxy_to_file(proxy):
+    if not os.path.isdir(SCONE_STATE):
+        os.mkdir(SCONE_STATE)
+
     with open(PROXY_FILE, 'wt') as f:
         f.write('"{}"'.format(proxy))
 
