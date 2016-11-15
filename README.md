@@ -20,7 +20,9 @@
 
 # Local knowledge
 
-If you want automatically load local knowledge, save on .lisp files in a subdirectory called `scone-knowledge.d`. All ".lisp" files on directories and subdirectories are loaded in alphabetic order.
+Different knowledge bases can be load automatically during the scone-wrapper startup. This is very convenient if you don't want to mess around with core-kb files or if you are simply doing some tests. 
+
+In order to do that, you just have to keep all your .lisp files in a directory names `scone-knowledge.d`. Then, the `scone-wrapper` will have to be launched from the same directory level where the `scone-knowledge.d` is being kept. Please, note that all ".lisp" files contained in the`scone-knowledge.d` directory and its subdirectories are loaded in alphabetic order.
 
 Start `scone-wrapper` from parent:
 
