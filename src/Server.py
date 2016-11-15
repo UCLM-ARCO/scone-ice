@@ -24,6 +24,7 @@ import Semantic
 
 LOCAL_KNOWLEDGE_DIR = 'scone-knowledge.d'
 SNAPSHOT_DIR = 'snapshots'
+PROXY_FILE = '/tmp/scone-wrapper.proxy'
 
 
 def iterate_files(path, callback):
@@ -104,12 +105,23 @@ class SconeServiceI(Semantic.SconeService):
         logging.info("New checkpoint at '{}' was OK".format(fpath))
 
 
+def save_proxy_to_file(proxy):
+    with open(PROXY_FILE, 'wt') as f:
+        f.write('"{}"'.format(proxy))
+
+
+def remove_proxy_file():
+    if os.path.exists(PROXY_FILE):
+        os.remove(PROXY_FILE)
+
+
 class Server(Ice.Application):
     def run(self, args):
         host = "localhost"
         if len(args) > 1:
             host = args[1]
 
+        self.scone_server = None
         broker = self.communicator()
 
         try:
@@ -119,14 +131,21 @@ class Server(Ice.Application):
             proxy = adapter.add(servant, broker.stringToIdentity("scone"))
 
             print(proxy)
+            save_proxy_to_file(proxy)
+
             sys.stdout.flush()
 
             adapter.activate()
             self.shutdownOnInterrupt()
             broker.waitForShutdown()
+
+        except Ice.SocketException:
+            logging.error("scone-wrapper already running!")
+            return 1
+
         finally:
             self.stop_scone_server()
-            pass
+            remove_proxy_file()
 
         return 0
 
@@ -136,7 +155,19 @@ class Server(Ice.Application):
         logging.info("scone-server started PID:{}".format(self.scone_server.pid))
 
     def stop_scone_server(self):
-        self.scone_server.send_signal(signal.SIGINT)
+        logging.info("\nterminating scone-server...")
+
+        server = self.scone_server
+        if server is None:
+            return
+
+        for i in range(10):
+            if server.poll():
+                break
+
+            server.send_signal(signal.SIGINT)
+            time.sleep(0.3)
+
         logging.info("scone-server terminated OK")
 
 
