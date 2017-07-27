@@ -18,7 +18,7 @@
     scone -t -e 1.1:tcp -h 10.130.89.144 -p 5001 -t 60000
     ...
 
-# Stopping the servie
+# Stopping the server
 
 The termination of the service is done using the combination Ctrl+C. However, if the server does not properly finish its execusion you will not be able to start it up again. In order to overcome this problem, simply go to the `/tmp` directory and delete the scone-server.pid. This will solve the problem.
 
