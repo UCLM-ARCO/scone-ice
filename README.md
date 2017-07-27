@@ -26,7 +26,7 @@ The termination of the service is done using the combination Ctrl+C. However, if
 
 Different knowledge bases can be load automatically during the scone-wrapper startup. This is very convenient if you don't want to mess around with core-kb files or if you are simply doing some tests. 
 
-In order to do that, you just have to keep all your .lisp files in a directory names `scone-knowledge.d`. Then, the `scone-wrapper` will have to be launched from the same directory level where the `scone-knowledge.d` is being kept. Please, note that all ".lisp" files contained in the`scone-knowledge.d` directory and its subdirectories are loaded in alphabetic order.
+In order to do that, you just have to keep all your .lisp files in a directory called `scone-knowledge.d`. Then, the `scone-wrapper` will have to be launched in the directoy where `scone-knowledge.d` directory is. Please, note that all ".lisp" files contained in the`scone-knowledge.d` directory and its subdirectories are loaded in alphabetic order.
 
 Start `scone-wrapper` from parent:
 
