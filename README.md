@@ -67,7 +67,7 @@ Then server generates a file at:
 When you restart the server, these files will be loaded as the other local knowledge.
 
 
-# Run from repository
+# Run server from the source directory (this repository)
 
 To start scone-wrapper from repository contents run:
 
