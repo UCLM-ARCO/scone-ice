@@ -19,7 +19,7 @@ logging.getLogger().setLevel(logging.DEBUG)
 
 
 slice_dir = "/usr/share/slice"
-Ice.loadSlice("-I{0} {0}/dharma/dharma.ice --all".format(slice_dir))
+Ice.loadSlice("-I{0} {0}/dharma/scone-wrapper.ice --all".format(slice_dir))
 import Semantic
 
 LOCAL_KNOWLEDGE_DIR = 'scone-knowledge.d'
@@ -90,7 +90,7 @@ class SconeServiceI(Semantic.SconeService):
     def sentence(self, msg, current=None):
         return self.do_sentence(msg)
 
-    def sconeRequest(self, msg, current=None):
+    def request(self, msg, current=None):
         return self.do_sentence(msg)
 
     def checkpoint(self, fname, current=None):

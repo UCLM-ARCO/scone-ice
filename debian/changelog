@@ -1,3 +1,10 @@
+scone-wrapper (0.20170915-1) unstable; urgency=low
+
+  * New release
+  * New file src/scone-wrapper.ice
+
+ -- David Villa Alises <David.Villa@gmail.com>  Fri, 15 Sep 2017 11:35:05 +0200
+
 scone-wrapper (0.20161115.3-1) unstable; urgency=low
 
   * New release

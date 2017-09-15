@@ -14,6 +14,8 @@ install:
 	install -m 744 scone-wrapper $(DESTDIR)/usr/bin/
 	install -d $(DESTDIR)/usr/lib/scone-wrapper/
 	install -m 644 src/Server.py $(DESTDIR)/usr/lib/scone-wrapper/
+	install -d $(DESTDIR)/usr/share/slice/dharma/
+	install -m 644 src/scone-wrapper.ice $(DESTDIR)/usr/share/slice/dharma/
 	install -d $(DESTDIR)/etc/default
 	install -m 644 src/Server.config $(DESTDIR)/etc/default/scone-wrapper.config
 
