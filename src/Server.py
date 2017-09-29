@@ -17,6 +17,8 @@ stderrLogger.setFormatter(logging.Formatter(logging.BASIC_FORMAT))
 logging.getLogger().addHandler(stderrLogger)
 logging.getLogger().setLevel(logging.DEBUG)
 
+CONFIG_FILE = 'src/Server.config'
+
 
 slice_dir = "/usr/share/slice"
 Ice.loadSlice("-I{0} {0}/dharma/scone-wrapper.ice --all".format(slice_dir))
@@ -132,7 +134,15 @@ class Server(Ice.Application):
         try:
             self.start_scone_server()
             servant = SconeServiceI(host)
-            adapter = broker.createObjectAdapter("SconeAdapter")
+
+            try:
+                adapter = broker.createObjectAdapter("Adapter")
+            except Ice.InitializationException:
+                print("No config provided, using : '{}'".format(CONFIG_FILE))
+                properties = broker.getProperties()
+                properties.setProperty('Ice.Config', CONFIG_FILE)
+                adapter = broker.createObjectAdapter("Adapter")
+
             proxy = adapter.add(servant, broker.stringToIdentity("scone"))
 
             print(proxy)
