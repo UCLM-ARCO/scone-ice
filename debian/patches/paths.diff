@@ -2,9 +2,12 @@ Index: scone.wrapper/scone-wrapper
 ===================================================================
 --- scone.wrapper.orig/scone-wrapper
 +++ scone.wrapper/scone-wrapper
-@@ -1,4 +1,4 @@
+@@ -1,6 +1,6 @@
  #!/bin/bash --
  # -*- coding: utf-8; mode: shell-script; tab-width: 4 -*-
  
--src/Server.py --Ice.Config=src/Server.config
-+python3 /usr/lib/scone-wrapper/Server.py --Ice.Config=/etc/default/scone-wrapper.config
+-CONFIG=${1:-"--Ice.Config=src/Server.config"}
++CONFIG=${1:-"--Ice.Config=/etc/default/scone-wrapper.config"}
+ 
+-src/Server.py $CONFIG
++python3 /usr/lib/scone-wrapper/Server.py $CONFIG

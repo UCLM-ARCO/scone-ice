@@ -1,3 +1,10 @@
+scone-wrapper (0.20171003-1) unstable; urgency=low
+
+  * New release
+  * Config from command-line (with default)
+
+ -- David Villa Alises <David.Villa@gmail.com>  Tue, 03 Oct 2017 16:44:29 +0200
+
 scone-wrapper (0.20170915-1) unstable; urgency=low
 
   * New release

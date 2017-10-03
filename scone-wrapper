@@ -1,6 +1,6 @@
 #!/bin/bash --
 # -*- coding: utf-8; mode: shell-script; tab-width: 4 -*-
 
-CONFIG?=src/Server.config
+CONFIG=${1:-"--Ice.Config=src/Server.config"}
 
-src/Server.py --Ice.Config=$CONFIG
+src/Server.py $CONFIG
