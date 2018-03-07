@@ -54,7 +54,7 @@ INFO:root:connection OK
 INFO:root:Uploading local knowledge...
 scone -t -e 1.1:tcp -h 10.130.89.144 -p 5001 -t 60000
 ...
-´´´
+```
 
 # Using checkpoints
 
