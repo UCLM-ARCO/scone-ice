@@ -8,16 +8,16 @@
 # Running
 
 ```
-    $ scone-wrapper
-    INFO:root:scone-server started PID:24329
-    INFO:root:Trying to connect to scone-server...
-    Config: port: 6517, xml: nil, host=0.0.0.0
+$ scone-wrapper
+INFO:root:scone-server started PID:24329
+INFO:root:Trying to connect to scone-server...
+Config: port: 6517, xml: nil, host=0.0.0.0
 
-    All error and log messages will be printed to "SCONE-SERVER.LOG")...
-    Server started. Press C-c to stop
-    INFO:root:connection OK
-    scone -t -e 1.1:tcp -h 10.130.89.144 -p 5001 -t 60000
-    ...
+All error and log messages will be printed to "SCONE-SERVER.LOG")...
+Server started. Press C-c to stop
+INFO:root:connection OK
+scone -t -e 1.1:tcp -h 10.130.89.144 -p 5001 -t 60000
+...
 ```  
     
 # Stopping the server
@@ -32,29 +32,29 @@ In order to do that, you just have to keep all your .lisp files in a directory c
 
 Start `scone-wrapper` from parent:
 
-    $ ls
-    scone-knowledge.d
+```
+$ ls
+scone-knowledge.d
 
-    $ ls scone-knowledge.d/
-    monkeys.lisp
+$ ls scone-knowledge.d/
+monkeys.lisp
 
-    $ cat scone-knowledge.d/monkeys.lisp
-    (new-indv {Martin} {monkey})
-    (new-indv {Felix}  {monkey})
+$ cat scone-knowledge.d/monkeys.lisp
+(new-indv {Martin} {monkey})
+(new-indv {Felix}  {monkey})
 
-    $ scone-wrapper
-    INFO:root:scone-server started PID:24936
-    INFO:root:Trying to connect to scone-server...
-    Config: port: 6517, xml: nil, host=0.0.0.0
+$ scone-wrapper
+INFO:root:scone-server started PID:24936
+INFO:root:Trying to connect to scone-server...
+Config: port: 6517, xml: nil, host=0.0.0.0
 
-    All error and log messages will be printed to "SCONE-SERVER.LOG")...
-    Server started. Press C-c to stop
-    INFO:root:connection OK
-    INFO:root:Uploading local knowledge...
-    scone -t -e 1.1:tcp -h 10.130.89.144 -p 5001 -t 60000
-    ...
-
-
+All error and log messages will be printed to "SCONE-SERVER.LOG")...
+Server started. Press C-c to stop
+INFO:root:connection OK
+INFO:root:Uploading local knowledge...
+scone -t -e 1.1:tcp -h 10.130.89.144 -p 5001 -t 60000
+...
+´´´
 
 # Using checkpoints
 
