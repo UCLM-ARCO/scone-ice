@@ -7,6 +7,7 @@
 
 # Running
 
+```
     $ scone-wrapper
     INFO:root:scone-server started PID:24329
     INFO:root:Trying to connect to scone-server...
@@ -17,13 +18,8 @@
     INFO:root:connection OK
     scone -t -e 1.1:tcp -h 10.130.89.144 -p 5001 -t 60000
     ...
+```  
     
-    
-```
-No language indicated, so no syntax highlighting. 
-But let's throw in a <b>tag</b>. local
-```
-
 # Stopping the server
 
 The termination of the service is done using the combination Ctrl+C. However, if the server does not properly finish its execution, you will not be able to start it up again. In order to overcome this problem, simply go to the `.scone` directory and delete the `scone-server.pid`. This will solve the problem.
