@@ -7,7 +7,7 @@
 
 # Running
 
-```
+```bash
 $ scone-wrapper
 INFO:root:scone-server started PID:24329
 INFO:root:Trying to connect to scone-server...
