@@ -1,1 +1,6 @@
 SCONE-SERVER.LOG
+**/*.pyc
+debian/scone-wrapper*
+debian/.debhelper
+debian/files
+
