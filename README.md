@@ -1,7 +1,7 @@
 # Install
 
 * Configure Debian testing (stretch) mirror
-* Add [pike repository](http://pike.esi.uclm.es/)
+* Add [arco repository](https://uclm-arco.github.io)
 * sudo apt install scone-wrapper
 
 
