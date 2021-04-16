@@ -167,7 +167,7 @@ class Server(Ice.Application):
     def start_scone_server(self):
         cmd = '/bin/bash -c scone-server'.split()
         self.scone_server = Popen(cmd)
-        logging.info("scone-server started PID:{}".format(self.scone_server.pid))
+        logging.info("- starting scone-server PID:{}".format(self.scone_server.pid))
 
     def stop_scone_server(self):
         logging.info("\nterminating scone-server...")
